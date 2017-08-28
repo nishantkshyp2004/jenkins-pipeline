@@ -9,10 +9,8 @@ agent any
 stages{
     stage("Get Credentials from Vault"){
         steps{
-            step{
                 echo ('Status: '+ response.status)
                 echo ('Response: '+ response.content)
-            }
         }
     }
 }
