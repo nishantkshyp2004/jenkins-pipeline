@@ -11,8 +11,8 @@ agent any
 stages{
     stage("Get Credentials from Vault"){
         steps{
-                echo '$response.status'
-                echo '$response.content'
+                echo '${response.status}'
+                echo '${response.content}'
         }
     }
 }
