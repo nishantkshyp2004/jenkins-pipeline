@@ -10,14 +10,14 @@ environment{
 agent any
 
 stages{
-    stage("Get Source Control Tool command")
+    stage("Get Source Control Tool command"){
         steps{
            script{
            def source_control_command = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: sc_postdata, responseHandle:'STRING', url: 'http://127.0.0.1:8000/get_node_data/'
            echo source_control_command
            }
         }
-
+    }
     stage("Get Credentials from Vault"){
         steps{
             script{
