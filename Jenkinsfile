@@ -17,9 +17,7 @@ stages{
            echo source_control_command
            }
         }
-}
 
-stages{
     stage("Get Credentials from Vault"){
         steps{
             script{
