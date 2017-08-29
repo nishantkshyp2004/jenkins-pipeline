@@ -13,9 +13,9 @@ stages{
     stage("Get Source Control Tool command"){
         steps{
            script{
-           def source_control_command = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: sc_postdata, responseHandle:'STRING', url: 'http://127.0.0.1:8000/get_node_data/'
-           println("Status: "+source_control_command.status)
-           println("Content: "+source_control_command.content)
+           def sc_tool_response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: sc_postdata, responseHandle:'STRING', url: 'http://127.0.0.1:8000/get_node_data/'
+           println("Status: "+sc_tool_response.status)
+           println("Content: "+sc_tool_response.content.response)
            }
         }
     }
