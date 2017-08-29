@@ -14,8 +14,8 @@ stages{
         steps{
            script{
            def source_control_command = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: sc_postdata, responseHandle:'STRING', url: 'http://127.0.0.1:8000/get_node_data/'
-           echo source_control_command.status
-           echo source_control_command.content
+           println("Status: "+source_control_command.status)
+           println("Content: "+source_control_command.content)
            }
         }
     }
