@@ -54,8 +54,7 @@ stages{
     stage("Storing Credentails to build tool if not exist"){
         steps{
             script{
-            def output = sh 'java -jar jenkins-cli.jar -s  ${JENKINS_URL} list-credentials ${JENKINS_STORE}'+
-               ' --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}', returnStdout: true
+            def output = sh 'java -jar jenkins-cli.jar -s  ${JENKINS_URL} list-credentials ${JENKINS_STORE} --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}', returnStdout: true
 
             def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
 
