@@ -42,63 +42,17 @@ stages{
 
                 }
                 catch (exc){
-                    error "Error in fecthing credentials from Vault service."
+                    error "Error in fetching credentials from Vault service."
 
                 }
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
-                response_json = readJSON text: vault_response.content
-                username = response_json['response']['data']['json_data']['username']
+
 
             }
         }
     }
-    stage("Storing Credentails to build tool if not exist"){
-        steps{
-            script{
-            def output = sh 'java -jar jenkins-cli.jar -s  ${JENKINS_URL} list-credentials ${JENKINS_STORE}'+
-               ' --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}', returnStdout: true
 
-            def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
-
-            if (output  != '${username}'){
-
-                def passwordInput = input(
-                 id: 'PaswordInput', message: 'Let\'s promote?', parameters: [
-                 [$class: 'TextParameterDefinition', defaultValue: 't', description: 'Environment', name: 'password'],
-                ])
-
-                try{
-
-                    def result = sh "java -jar $jenkins-cli.jar -s ${JENKINS_URL} groovy AddUserPwdCred.groovy"+
-                     "' ${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username ${JENKINS_USER} --password ${JENKINS_PWD}"
-
-                    credentialsId = '${username}123'
-
-                }
-                catch (exc){
-                    error "Error in adding credentails to jenkins store"
-
-                }
-
-            }else{
-
-                echo "Credentials with the username: ${username} already in the Jenkins Store"
-                credentialsId = sh 'echo ${output} | awk {print$1}', returnStdout: true
-
-            }
-
-            }
-        }
-    }
-    stage("Running the job source control type checkout command"){
-            steps{
-                    println('Credentialids: '+ '${credentialsId}')
-                    script{
-                        evaluate(sc_tool_command)
-                    }
-            }
-    }
 
 }
 }
