@@ -18,7 +18,6 @@ stages{
            println("Content: "+sc_tool_response.content)
            evaluate(sc_tool_response.content)
            }
-           println("Content: "+"${sc_tool_response.content}")
         }
     }
     stage("Get Credentials from Vault"){
@@ -28,6 +27,22 @@ stages{
                 def response = httpRequest acceptType:'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: get_valut_cred_postdata, responseHandle:'LEAVE_OPEN', url: 'http://ec2-34-196-246-23.compute-1.amazonaws.com:8150/api/viewsecret/'
                 println("Status: "+response.status)
                 println("Content: "+response.content)
+
+            }
+        }
+    }
+    stage("Get List of Credentials from Jenkins"){
+        steps{
+            script{
+                def creds = com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(
+                com.cloudbees.plugins.credentials.common.StandardUsernameCredentials.class,
+                Jenkins.instance,
+                null,
+                null
+            )
+            for (c in creds) {
+                 println(c.id + ": " + c.description)
+            }
 
             }
         }
