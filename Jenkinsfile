@@ -84,7 +84,7 @@ stages{
             }else{
 
                 echo "Credentials with the username: ${username} already in the Jenkins Store"
-                credentialsId = sh "echo ${output} | awk '{print$1}'", returnStdout: true
+                credentialsId = sh "echo" +"${output}"+ " | awk '{print$1}'", returnStdout: true
 
             }
 
