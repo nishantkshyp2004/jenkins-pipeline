@@ -60,9 +60,9 @@ stages{
 
             list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " root"
 
-            def output = sh script: list_credential_command returnStdout: true
+            def output = sh script: list_credential_command, returnStdout: true
 
-            def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
+            def username = sh script:'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
 
             if (output  != '${username}'){
 
@@ -86,7 +86,7 @@ stages{
             }else{
 
                 echo "Credentials with the username: ${username} already in the Jenkins Store"
-                credentialId = sh 'echo ${output} | awk {print$1}', returnStdout: true
+                credentialId = sh script: 'echo ${output} | awk {print$1}', returnStdout: true
 
             }
 
