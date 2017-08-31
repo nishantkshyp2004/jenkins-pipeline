@@ -7,7 +7,7 @@ environment{
     def sc_postdata = '{"path": "source_code_tool_type/github"}'
     def jenkins_url = 'http://127.0.0.1:8080'
     def jenkins_store = 'system::system::jenkins'
-    def jenkins_usernamename = 'root'
+    def jenkins_username = 'root'
     def jenkins_password = 'root@123'
 }
 
@@ -54,7 +54,7 @@ stages{
     stage("Storing Credentails to build tool if not exist"){
         steps{
             script{
-            def output = sh 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username ' + jenkins_username + ' --password ' + jenkins_password + ' | grep -w ${username}', returnStdout: true
+            def output = sh 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w ${username}', returnStdout: true
 
             def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
 
