@@ -54,7 +54,36 @@ stages{
     stage("Storing Credentails to build tool if not exist"){
         steps{
             script{
-            println('JENKINS_URL: '+ jenkins_url)
+            def output = sh 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username ' + jenkins_user + ' --password ' + jenkins_password + ' | grep -w ${username}', returnStdout: true
+
+            def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
+
+            if (output  != '${username}'){
+
+                def passwordInput = input(
+                 id: 'PaswordInput', message: 'Let\'s promote?', parameters: [
+                 [$class: 'TextParameterDefinition', defaultValue: 't', description: 'Environment', name: 'password'],
+                ])
+
+                try{
+
+                    def result = sh "java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
+                     "'${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username "+jenkins_user+' --password ' +jenkins_password"
+
+                    credentialId = '${username}123'
+
+                }
+                catch (exc){
+                    error "Error in adding credentails to jenkins store"
+
+                }
+
+            }else{
+
+                echo "Credentials with the username: ${username} already in the Jenkins Store"
+                credentialId = sh 'echo ${output} | awk {print$1}', returnStdout: true
+
+            }
 
             }
         }
