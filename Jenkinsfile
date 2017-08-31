@@ -75,7 +75,7 @@ stages{
                 try{
 
                     def result = sh script:"java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
-                     " '${vault_response_username}123' 'Jenkins credentials for $${vault_response_username}' '${vault_response_username}' '${vault_response_username}@123' --username "+jenkins_username+" --password " +jenkins_password
+                     " ${vault_response_username}+'123' 'Jenkins credentials for ${vault_response_username}' ' ${vault_response_username} ' '${vault_response_username}@123' --username "+jenkins_username+" --password " +jenkins_password
                      credentialId = '${vault_response_username}123'
 
                 }
