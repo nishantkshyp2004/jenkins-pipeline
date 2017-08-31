@@ -26,6 +26,9 @@ stages{
                 def vault_response = httpRequest acceptType:'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: vault_cred_postdata, url: 'http://ec2-34-196-246-23.compute-1.amazonaws.com:8150/api/viewsecret/'
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
+                def jsonSlurper = new JsonSlurper()
+                def obj = jsonSlurper.parseText(vault_response.content)
+
 
             }
         }
