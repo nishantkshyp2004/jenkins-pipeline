@@ -57,7 +57,7 @@ stages{
         steps{
             script{
             def output = sh 'java -jar jenkins-cli.jar -s  ${JENKINS_URL} list-credentials ${JENKINS_STORE}'+
-               ' --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}' returnStdout: true
+               ' --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}', returnStdout: true
 
             def username = sh 'echo ${output} | awk '{print$2}' | sed s:/[^/]*$::' returnStdout: true
 
@@ -73,7 +73,7 @@ stages{
                     def result = sh 'java -jar $jenkins-cli.jar -s ${JENKINS_URL} groovy AddUserPwdCred.groovy'+
                     "${username}123" "Jenkins credentials for ${username}" "${username}" "${username}@123" --username ${JENKINS_USER} --password ${JENKINS_PWD}'
 
-                    credentialsId = ${username}123
+                    credentialsId = '${username}123'
 
                 }
                 catch (exc){
@@ -84,7 +84,7 @@ stages{
             }else{
 
                 echo "Credentials with the username: ${username} already in the Jenkins Store"
-                credentialsId = sh 'echo ${output} | awk '{print$1}' returnStdout: true
+                credentialsId = sh 'echo ${output} | awk '{print$1}', returnStdout: true
 
             }
 
