@@ -47,6 +47,8 @@ stages{
                 }
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
+                response_json = readJSON text: vault_response.content
+                username = response_json['response']['data']['json_data']['username']
 
             }
         }
