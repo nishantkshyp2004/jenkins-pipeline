@@ -60,7 +60,7 @@ stages{
 
             list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " root"
 
-            def output = sh list_credential_command, returnStdout: true
+            def output = sh script: list_credential_command returnStdout: true
 
             def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
 
@@ -73,7 +73,7 @@ stages{
 
                 try{
 
-                    def result = sh "java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
+                    def result = sh script:"java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
                      "'${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username "+jenkins_username+" --password " +jenkins_password
                      credentialId = '${username}123'
 
