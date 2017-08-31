@@ -28,6 +28,8 @@ stages{
                 println("Content: "+vault_response.content)
                 def jsonSlurper = new JsonSlurper()
                 def obj = jsonSlurper.parseText(vault_response.content)
+                println("email: "+obj.response.data.json_data.email)
+
 
 
             }
