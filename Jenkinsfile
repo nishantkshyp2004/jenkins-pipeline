@@ -5,7 +5,7 @@ pipeline{
 environment{
     def vault_cred_postdata = '{"key_path": "secret/25709213-8a1c-4f73-b6c6-cf486be4d1fe"}'
     def sc_postdata = '{"path": "source_code_tool_type/github"}'
-    def JENKINS_URL = '127.0.0.1:8000'
+    def JENKINS_URL = 'http://127.0.0.1:8080'
     def JENKINS_STORE = 'system::system::jenkins'
     def JENKINS_USERNAME = 'root'
     def JENKINS_PASSWORD = 'root@123'
@@ -54,36 +54,7 @@ stages{
     stage("Storing Credentails to build tool if not exist"){
         steps{
             script{
-            def output = sh 'java -jar jenkins-cli.jar -s  ${JENKINS_URL} list-credentials ${JENKINS_STORE} --username ${JENKINS_USER} --password ${JENKINS_PWD} | grep -w ${username}', returnStdout: true
-
-            def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
-
-            if (output  != '${username}'){
-
-                def passwordInput = input(
-                 id: 'PaswordInput', message: 'Let\'s promote?', parameters: [
-                 [$class: 'TextParameterDefinition', defaultValue: 't', description: 'Environment', name: 'password'],
-                ])
-
-                try{
-
-                    def result = sh "java -jar $jenkins-cli.jar -s ${JENKINS_URL} groovy AddUserPwdCred.groovy"+
-                     "' ${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username ${JENKINS_USER} --password ${JENKINS_PWD}"
-
-                    credentialId = '${username}123'
-
-                }
-                catch (exc){
-                    error "Error in adding credentails to jenkins store"
-
-                }
-
-            }else{
-
-                echo "Credentials with the username: ${username} already in the Jenkins Store"
-                credentialId = sh 'echo ${output} | awk {print$1}', returnStdout: true
-
-            }
+            println('JENKINS_URL: '+ '${JENKINS_URL}')
 
             }
         }
