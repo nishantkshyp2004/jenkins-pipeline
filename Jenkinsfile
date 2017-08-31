@@ -22,6 +22,7 @@ stages{
     stage("Get Credentials from Vault"){
         steps{
             script{
+                import groovy.json.JsonSlurper
                 println("sc_tool_response : "+"${sc_tool_response.content}")
                 def vault_response = httpRequest acceptType:'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: vault_cred_postdata, url: 'http://ec2-34-196-246-23.compute-1.amazonaws.com:8150/api/viewsecret/'
                 println("Status: "+vault_response.status)
