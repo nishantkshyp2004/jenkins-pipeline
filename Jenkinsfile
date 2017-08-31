@@ -51,6 +51,15 @@ stages{
             }
         }
     }
+    stage("Storing Credentails to build tool if not exist"){
+        steps{
+            script{
+            println('JENKINS_URL: '+ jenkins_url)
+
+            }
+        }
+    }
+
 
 }
 }
