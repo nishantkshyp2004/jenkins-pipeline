@@ -59,6 +59,7 @@ stages{
             println("vault_response_username: "+"${vault_response_username}")
 
             list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " ${vault_response_username}"
+            println("list_credential_command: "+"${list_credential_command}")
 
             def output = sh script: list_credential_command, returnStdout: true
 
