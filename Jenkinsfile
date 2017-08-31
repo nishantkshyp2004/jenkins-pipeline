@@ -73,6 +73,7 @@ stages{
                  [$class: 'TextParameterDefinition', defaultValue: 't', description: 'Environment', name: 'password'],
                 ])
 
+                println("passwordInput: "+passwordInput)
                 try{
 
                     def result = sh script:"java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
