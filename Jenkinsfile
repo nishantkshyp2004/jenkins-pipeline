@@ -68,7 +68,7 @@ stages{
                 try{
 
                     def result = sh "java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
-                     "'${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username "+jenkins_user+' --password ' +jenkins_password"
+                     "'${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username "+jenkins_user+" --password " +jenkins_password
                      credentialId = '${username}123'
 
                 }
