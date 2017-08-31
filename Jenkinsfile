@@ -22,8 +22,8 @@ stages{
                }
                catch (exc)
                {
-                    echo "Error in fetch source control tool from Zookeeper API,"
-                    throw
+                    error "Error in fetch source control tool from Zookeeper API,"
+
                }
 
            println("Status: "+sc_tool_response.status)
@@ -42,8 +42,8 @@ stages{
 
                 }
                 catch (exc){
-                    echo "Error in fecthing credentials from Vault service."
-                    throw
+                    error "Error in fecthing credentials from Vault service."
+
                 }
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
@@ -73,18 +73,18 @@ stages{
                     def result = sh 'java -jar $jenkins-cli.jar -s ${JENKINS_URL} groovy AddUserPwdCred.groovy'+
                     "${username}123" "Jenkins credentials for ${username}" "${username}" "${username}@123" --username ${JENKINS_USER} --password ${JENKINS_PWD}'
 
-                    def credentialsId = ${username}123
+                    credentialsId = ${username}123
 
                 }
                 catch (exc){
-                    echo "Error in adding credentails to jenkins store"
-                    throw
+                    error "Error in adding credentails to jenkins store"
+
                 }
 
             }else{
 
                 echo "Credentials with the username: ${username} already in the Jenkins Store"
-                def credentialsId = sh 'echo ${output} | awk '{print$1}' returnStdout: true
+                credentialsId = sh 'echo ${output} | awk '{print$1}' returnStdout: true
 
             }
 
@@ -93,6 +93,7 @@ stages{
     }
     stage("Running the job source control type checkout command"){
             steps{
+                    println('Credentialids: '+ '${credentialsId}')
                     script{
                         evaluate(sc_tool_command)
                     }
