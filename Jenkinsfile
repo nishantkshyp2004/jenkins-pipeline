@@ -57,7 +57,10 @@ stages{
         steps{
             script{
             println("USERNAME: "+"${username}")
-            def output = sh 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w ${username}', returnStdout: true
+
+            list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w ${username}'
+
+            def output = sh list_credential_command, returnStdout: true
 
             def username = sh 'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
 
