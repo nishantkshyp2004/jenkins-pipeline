@@ -63,9 +63,7 @@ stages{
 
             def output = sh script: list_credential_command, returnStdout: true
 
-            list_credential_username_command = "echo ${output} | awk '{print$2}' | sed s:/[^/]*$::"
-            println("list_credential_username_command: "+"${list_credential_username_command}")
-            def list_credential_username = sh script: list_credential_username_command, returnStdout: true
+            def list_credential_username = sh script:'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
             println("list_credential_username: "+"${list_credential_username}")
 
             if ("${vault_response_username}"  != list_credential_username){
