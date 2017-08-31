@@ -26,8 +26,7 @@ stages{
                 def vault_response = httpRequest acceptType:'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: vault_cred_postdata, url: 'http://ec2-34-196-246-23.compute-1.amazonaws.com:8150/api/viewsecret/'
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
-                asdf = vault_response.content
-                response_json = readJSON text: '$asdf'
+                response_json = readJSON text: ''+vault_response.content
 
                 println("email: "+response_json['response']['data']['json_data']['email'])
 
