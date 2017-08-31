@@ -5,10 +5,10 @@ pipeline{
 environment{
     def vault_cred_postdata = '{"key_path": "secret/25709213-8a1c-4f73-b6c6-cf486be4d1fe"}'
     def sc_postdata = '{"path": "source_code_tool_type/github"}'
-    def JENKINS_URL = 'http://127.0.0.1:8080'
-    def JENKINS_STORE = 'system::system::jenkins'
-    def JENKINS_USERNAME = 'root'
-    def JENKINS_PASSWORD = 'root@123'
+    def jenkins_url = 'http://127.0.0.1:8080'
+    def jenkins_store = 'system::system::jenkins'
+    def jenkins_username = 'root'
+    def jenkins_password = 'root@123'
 }
 
 agent any
@@ -50,22 +50,6 @@ stages{
 
             }
         }
-    }
-    stage("Storing Credentails to build tool if not exist"){
-        steps{
-            script{
-            println('JENKINS_URL: '+ '${JENKINS_URL}')
-
-            }
-        }
-    }
-    stage("Running the job source control type checkout command"){
-            steps{
-                    println('Credentialids: '+ '${credentialId}')
-                    script{
-                        evaluate(sc_tool_command)
-                    }
-            }
     }
 
 }
