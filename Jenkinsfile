@@ -48,7 +48,7 @@ stages{
                 println("Status: "+vault_response.status)
                 println("Content: "+vault_response.content)
                 response_json = readJSON text: vault_response.content
-                username = response_json['response']['data']['json_data']['username']
+                vault_response_username = response_json['response']['data']['json_data']['username']
 
             }
         }
@@ -56,15 +56,16 @@ stages{
     stage("Storing Credentails to build tool if not exist"){
         steps{
             script{
-            println("USERNAME: "+"${username}")
+            println("vault_response_username: "+"${vault_response_username}")
 
-            list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " root"
+            list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " ${vault_response_username}"
 
             def output = sh script: list_credential_command, returnStdout: true
 
-            def username = sh script:'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
+            def list_credential_username = sh script:'echo ${output} | awk {print$2} | sed s:/[^/]*$::', returnStdout: true
+            println("list_credential_username: "+"${list_credential_username}")
 
-            if (output  != '${username}'){
+            if ("${vault_response_username}"  != list_credential_username){
 
                 def passwordInput = input(
                  id: 'PaswordInput', message: 'Let\'s promote?', parameters: [
@@ -74,8 +75,8 @@ stages{
                 try{
 
                     def result = sh script:"java -jar $jenkins-cli.jar -s "+jenkins_url+ " groovy AddUserPwdCred.groovy"+
-                     "'${username}123' 'Jenkins credentials for ${username}' '${username}' '${username}@123' --username "+jenkins_username+" --password " +jenkins_password
-                     credentialId = '${username}123'
+                     " '${vault_response_username}123' 'Jenkins credentials for $${vault_response_username}' '${vault_response_username}' '${vault_response_username}@123' --username "+jenkins_username+" --password " +jenkins_password
+                     credentialId = '${vault_response_username}123'
 
                 }
                 catch (exc){
@@ -85,7 +86,7 @@ stages{
 
             }else{
 
-                echo "Credentials with the username: ${username} already in the Jenkins Store"
+                echo "Credentials with the username: ${vault_response_username} already in the Jenkins Store"
                 credentialId = sh script: 'echo ${output} | awk {print$1}', returnStdout: true
 
             }
