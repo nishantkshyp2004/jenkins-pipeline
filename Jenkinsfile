@@ -58,7 +58,7 @@ stages{
             script{
             println("USERNAME: "+"${username}")
 
-            list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ "root"
+            list_credential_command = 'java -jar jenkins-cli.jar -s '+ jenkins_url + ' list-credentials ' + jenkins_store + ' --username '+jenkins_username+' --password ' + jenkins_password + ' | grep -w'+ " root"
 
             def output = sh list_credential_command, returnStdout: true
 
